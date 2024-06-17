@@ -1,0 +1,23 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualisation de tâches et capacités</title>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+</head>
+<body>
+    <div id="menu"></div>
+    <button id="cancelPathButton" style="display: none;">Annuler le trajet</button>
+    <div id="graph-container"></div>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    
+    <script src="{% static 'js/script.js' %}"></script>
+    <script>
+        // Include CSRF token in document for JavaScript
+        document.cookie = "csrftoken={{ csrf_token }}";
+    </script>
+</body>
+</html>

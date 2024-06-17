@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Success</title>
+</head>
+<body>
+    <h1>JSON File Imported Successfully</h1>
+    
+    <h2>Nodes</h2>
+    <ul>
+        {% for node in json_data.nodes %}
+        <li>
+            <strong>Label:</strong> {{ node.label }}<br>
+            <strong>Description:</strong> {{ node.concise_description }}<br>
+            <strong>Type:</strong> {{ node.type }}
+        </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Edges</h2>
+    <ul>
+        {% for edge in json_data.edges %}
+        <li>
+            <strong>Source:</strong> {{ edge.source }}<br>
+            <strong>Target:</strong> {{ edge.target }}<br>
+            <strong>Label:</strong> {{ edge.label }}
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

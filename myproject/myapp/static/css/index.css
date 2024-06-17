@@ -1,0 +1,253 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Readex+Pro:wght@160..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@100..900&family=Readex+Pro:wght@160..700&display=swap');
+
+
+/* Ajoutez votre style ici */
+body {
+    padding: 0%;
+    margin: 0px;
+    background-color: #626262;
+}
+
+.node {
+    fill: #ccc;
+    stroke: #fff;
+    stroke-width: 2px;
+}
+
+.link {
+    fill: none;
+    stroke: #fdfdfd;
+    stroke-width: 2px;
+}
+
+.link-choose {
+    fill: none;
+    stroke: orange;
+    stroke-width: 4px;
+}
+
+.text {
+    fill: white;
+    /* Changez cette couleur en fonction de votre besoin */
+    font-size: 24px;
+    stroke: black;
+    stroke-width: 0.01px;
+    font-weight: normal;
+    font-family: "Readex Pro", sans-serif;
+}
+
+.node text {
+    /* Assurez-vous que les textes sont toujours affichés au-dessus des cercles */
+    /* Un z-index plus élevé garantit que les textes seront superposés aux cercles */
+    z-index: 1;
+}
+
+.text-carre {
+    border-radius: 30em;
+}
+
+.bold {
+    font-weight: bold;
+    font-size: large;
+}
+
+/* Styles pour le menu */
+#menu {
+    position: absolute;
+    background-color: #2C2C2C;
+    color: #ccc;
+    padding: 10px;
+    width: 33%;
+    /* Taille fixe en largeur */
+    height: 100%;
+    display: none;
+    word-wrap: break-word;
+    /* Permet de sauter une ligne si le contenu dépasse la largeur fixe */
+    bottom: 0px;
+    left: -100%;
+    /* Déplacer le menu en dehors de la fenêtre */
+    transition: left 1s;
+    font-family: "Noto Sans Mono", monospace;
+    /* Ajouter une transition pour une animation en douceur */
+}
+
+#menu p {
+    margin-top: 1rem;
+}
+
+.pinfo {
+    margin-top: 4Em;
+}
+
+/* Styles pour la bordure en forme de cercle */
+.selected-circle {
+    fill: none;
+    stroke: rgb(255, 255, 255);
+    stroke-width: 2px;
+    display: none;
+}
+
+.menutitre {
+    font-family: "Anton", sans-serif;
+    text-align: center;
+}
+
+.menulabel {
+    font-family: "Readex Pro", sans-serif;
+    
+}
+
+#graph-container {
+    z-index: 0;
+}
+
+#cancelPathButton {
+    background-color: #fbeee0;
+    border: 2px solid #422800;
+    border-radius: 30px;
+    box-shadow: #422800 4px 4px 0 0;
+    color: #422800;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 18px;
+    padding: 0 18px;
+    line-height: 50px;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    position: absolute;
+    top: 90%;
+    /* ajustez la valeur top selon votre préférence */
+    left: 50%;
+    /* ajustez la valeur left selon votre préférence */
+    transform: translateX(-50%);
+    z-index: 999;
+    /* assurez-vous que le bouton a un z-index supérieur à celui des autres éléments */
+}
+
+#cancelPathButton:hover {
+    background-color: #fff;
+}
+
+#cancelPathButton:active {
+    box-shadow: #422800 2px 2px 0 0;
+    /* transform: translate(2px, 2px); */
+}
+
+
+
+
+#SelectionJSON {
+    text-align: center;
+    color: white;
+    margin-top: 5em;
+    font-family: "Readex Pro", sans-serif;
+}
+
+#form-selected-JSON {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+}
+
+ #submit-selected-JSON {
+    margin-top: 4em;
+    width: 10%;
+    padding: 2em;
+    align-content: center;
+ }
+
+.drop-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    height: 200px;
+    padding: 20px;
+    border: 2px dashed #222245;
+    color: #222245;
+    cursor: pointer;
+    transition: background .2s ease-in-out, border .2s ease-in-out;
+    width: 30%;
+  }
+  
+  .drop-container:hover {
+    background-color: #eee;
+  }
+  
+  .drop-title {
+    color: #222245;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  input[type=file] {
+    width: 350px;
+    max-width: 100%;
+    color: #222245;
+    padding: 8px;
+    background-color: #fff;
+    border: 1px solid #222245;
+  }
+  
+  input[type=file]:focus {
+    outline: 2px dashed #222245;
+    outline-offset: 2px;
+  }
+  
+  input[type=file]::file-selector-button {
+    margin-right: 8px;
+    border: none;
+    background-color: #222245;
+    padding: 8px 12px;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  input[type=file]::file-selector-button:hover {
+    background-color: #4747b8;
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    body {
+      background-color: #1e1e3f;
+      color: #fff;
+    }
+  
+    .drop-container {
+      border-color: #35356e;
+      color: #fff;
+    }
+  
+    .drop-container:hover {
+      background-color: #282853;
+    }
+  
+    .drop-title {
+      color: #fff;
+    }
+  
+    input[type=file] {
+      color: #fff;
+      border: 1px solid #35356e;
+      background-color: #1e1e3f;
+    }
+  
+    input[type=file]:focus {
+      outline: 2px dashed #7c7cc0;
+      outline-offset: 2px;
+    }
+  
+    input[type=file]::file-selector-button {
+      background-color: #35356e;
+      color: #fff;
+    }
+  }
