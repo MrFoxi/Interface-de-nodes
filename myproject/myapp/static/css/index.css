@@ -53,6 +53,22 @@ body {
     font-size: large;
 }
 
+#menu-right {
+  position: absolute;
+  background-color: #2C2C2C;
+  color: #ccc;
+  right: 0;
+  top: 0; /* Ajustez selon vos besoins */
+  height: 99%;
+  width: 20%; /* Largeur du menu */
+  display: none; /* Masquer par défaut */
+  border: 1px solid #ccc; /* Bordure pour le menu */
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); /* Ombre pour un effet d'élévation */
+  z-index: 10; /* S'assurer qu'il est au-dessus d'autres éléments */
+}
+
+
+
 /* Styles pour le menu */
 #menu {
     position: absolute;
@@ -67,6 +83,7 @@ body {
     /* Permet de sauter une ligne si le contenu dépasse la largeur fixe */
     bottom: 0px;
     left: -100%;
+    z-index: 2;
     /* Déplacer le menu en dehors de la fenêtre */
     transition: left 1s;
     font-family: "Noto Sans Mono", monospace;
@@ -99,8 +116,21 @@ body {
     
 }
 
+.menulabel-right {
+  font-family: "Readex Pro", sans-serif;
+  text-align: center;
+  padding-top: 10%;
+  padding-bottom: 10%;
+  border: solid 1px white;
+  border-radius: 1em;
+  width: 20em;
+  margin-left: 2Em;
+  margin-bottom: 1em;
+}
+
 #graph-container {
-    z-index: 0;
+  position: relative;
+    z-index: 1; 
 }
 
 #cancelPathButton {
@@ -251,3 +281,67 @@ body {
       color: #fff;
     }
   }
+
+
+  .image-selector {
+    margin-top: 20px;
+}
+
+.image-grid {
+  padding : 10px;
+  border: rgb(78, 78, 78) solid 1px;
+  background: grey;
+  display: grid;
+  justify-items: center;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.selectable-image {
+    cursor: pointer;
+    border: 2px solid transparent;
+    padding: 1em;
+}
+
+.selectable-image:hover {
+    border-radius: 50em;
+    border: 3px solid rgb(78, 78, 78);
+}
+
+
+.sidebar {
+  position: fixed; /* ou absolute selon votre besoin */
+  right: 20px; /* Distance à droite */
+  top: 50%; /* Positionne le haut de la sidebar au milieu de l'écran */
+  transform: translateY(-50%); /* Ajuste la position pour centrer verticalement */
+  z-index: 1000; /* Assurez-vous que ce nombre soit supérieur à celui de graph-container */
+  background-color: white; /* Couleur de fond de la sidebar */
+  padding: 10px; /* Ajoutez un peu d'espace autour du contenu */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Ombre pour un effet de relief */
+  border-radius: 8px; /* Coins arrondis */
+}
+
+#toggleSidebar {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  cursor: pointer;
+}
+
+#windowMenu {
+  margin-top: 10px;
+  padding: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+.toggle-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  margin: 10px;
+}
+

@@ -1,10 +1,96 @@
-// Définir les chemins des images dans le script
-var imageUrl = "/static/images/Capture.png";
-console.log(imageUrl);
+
+if(typeof windowValue === 'undefined') {
+    loadGraphDataByWindow(1)
+}
+
+let isMenuOpen = true;
+
+function loadGraphDataByWindow(windowValue) {
+    
+    // Construire l'URL avec la valeur de 'window' en tant que paramètre GET
+    const url = `/graph_data_by_window/?window=${windowValue}`;
+
+    
+
+    d3.select("#graph-container").html('');
+
+    
+
+
+
+// Fonction pour créer une flèche
+function createArrow() {
+    var position_arrow = false;
+    
+    const arrow = d3.select("#graph-container svg").append("g")
+        .attr("class", "arrow")
+        .attr("transform", "translate(1890, 490)"); // Positionnez la flèche à droite
+
+    arrow.append("polygon")
+        .attr("points", "0,0 20,-10 20,10")
+        .attr("fill", "black") // Couleur de la flèche
+        .style("cursor", "pointer") // Changer le curseur pour indiquer que c'est cliquable
+        .on("click", () => {
+            toggleMenu(); // Appelle la fonction pour afficher/masquer le menu
+            // Mettre à jour la position de la flèche
+            updateArrowPosition(position_arrow, arrow);
+            position_arrow = !position_arrow; // Inverser l'état de la flèche
+        });
+}
+
+function updateArrowPosition(isMenuOpen, arrow) {
+    if (isMenuOpen) {
+        arrow.attr("transform", "translate(1890, 490)"); // Position de la flèche quand le menu est fermé
+    } else {
+        arrow.attr("transform", "translate(1510, 490)"); // Position de la flèche quand le menu est ouvert
+    }
+}
+
+function loadWindows() {
+    // Charger les fenêtres existantes
+    d3.json('/get_windows/').then(function (windows) {
+        const menu = d3.select("#menu-right");
+        menu.html(''); // Effacer le contenu du menu avant de recharger les fenêtres
+        menu.append("h3").text("List of Windows:").attr("class", "menutitre");
+        windows.forEach(windowValue => {
+            const windowDiv = menu.append("div")
+                .text(`Window: ${windowValue}`)
+                .attr("class", "menulabel-right")
+                .style("cursor", "pointer") // Indiquer que c'est cliquable
+                .on("click", () => {
+                    
+                    loadGraphDataByWindow(windowValue); // Recharger la page avec la valeur de la fenêtre
+                    toggleMenu();
+                });
+        });
+    });
+}
+
+
+function toggleMenu() {
+    const menu = d3.select("#menu-right");
+    // Initialiser le display si ce n'est pas défini
+    if (!menu.style("display")) {
+        menu.style("display", "none");
+    }
+    
+    const isDisplayed = menu.style("display") === "block";
+    
+    // Afficher ou masquer le menu
+    menu.style("display", isDisplayed ? "none" : "block");
+    
+    // Charger les fenêtres uniquement si le menu est affiché
+    if (!isDisplayed) {
+        loadWindows();
+    }
+    
+    // Mettre à jour la position de la flèche
+    updateArrowPosition(!isDisplayed, d3.select(".arrow")); // Passer l'état actuel du menu
+} 
 
 // Charger les données du graphe depuis l'URL /get_graph_data/
-d3.json("/get_graph_data/").then(function (data) {
-    const width = window.innerWidth;
+d3.json(url).then(function (data) {
+    const width = 1920;
     const height = window.innerHeight - 5;
 
     const svg = d3.select("#graph-container")
@@ -31,6 +117,8 @@ d3.json("/get_graph_data/").then(function (data) {
             jsonGroups[sourceNode.json].edges.push(edge);
         }
     });
+
+    createArrow();
 
     // Fonction pour créer une simulation par groupe JSON
     function createSimulation(nodes, edges) {
@@ -75,7 +163,7 @@ d3.json("/get_graph_data/").then(function (data) {
             .on("end", dragended));
 
     node.append("image")
-        .attr("xlink:href", imageUrl)
+        .attr("xlink:href", d => `/static/images/${d.image_node}.png`)  // Utilisation de l'ID de l'image
         .attr("x", -25)
         .attr("y", -25)
         .attr("width", 50)
@@ -105,7 +193,6 @@ d3.json("/get_graph_data/").then(function (data) {
 
     let lastClickedNodeId = null;
 
-
     function imageClicked(event, d) {
         const isDifferentNode = lastClickedNodeId !== d.id;
 
@@ -118,7 +205,11 @@ d3.json("/get_graph_data/").then(function (data) {
             });
         } else {
             svg.selectAll(".selected-circle").style("display", "none");
-            d3.select(event.target.parentNode).select(".selected-circle").style("display", "block");
+            if (event) {
+                d3.select(event.target.parentNode).select(".selected-circle").style("display", "block");
+            } else {
+                svg.select(`.node[id="${d.id}"]`).select(".selected-circle").style("display", "block");
+            }
             simulations.forEach(simulation => {
                 simulation.alpha(1).restart();
             });
@@ -156,25 +247,51 @@ d3.json("/get_graph_data/").then(function (data) {
     function openEditForm(nodeData) {
         const menu = d3.select("#menu");
         const csrfToken = getCookie("csrftoken");
-
+        const images = [1, 2, 3, 4, 5, 6, 7, 8, 9]; // Les noms des images sans extension
+        const imageSize = 50; // La taille des images dans le tableau
+    
+        let selectedImage = nodeData.image_node ? nodeData.image_node : null; // Récupérer l'ID de l'image actuelle
+    
         menu.html("");
         menu.append("div").html(`<h1 class="menutitre">Modifier Informations</h1>
-                            <form id="editForm">
-                                <input type="hidden" name="csrfmiddlewaretoken" value="${csrfToken}">
-                                <div class="pinfo">
-                                    <label class="bold" for="label">Titre :</label><br/>
-                                    <input type="text" id="label" name="label" value="${nodeData.label}"><br/>
-                                    <label class="bold" for="concise_description">Description :</label><br/>
-                                    <textarea id="concise_description" name="concise_description">${nodeData.concise_description}</textarea><br/>
-                                    <label class="bold" for="type">Type :</label><br/>
-                                    <input type="text" id="type" name="type" value="${nodeData.type}"><br/>
-                                </div>
-                                <button type="submit">Sauvegarder</button>
-                            </form>`);
-
+                                <form id="editForm">
+                                    <input type="hidden" name="csrfmiddlewaretoken" value="${csrfToken}">
+                                    <div class="pinfo">
+                                        <label class="bold" for="label">Titre :</label><br/>
+                                        <input type="text" id="label" name="label" value="${nodeData.label}"><br/>
+                                        <label class="bold" for="concise_description">Description :</label><br/>
+                                        <textarea id="concise_description" name="concise_description">${nodeData.concise_description}</textarea><br/>
+                                        <label class="bold" for="type">Type :</label><br/>
+                                        <input type="text" id="type" name="type" value="${nodeData.type}"><br/>
+                                    </div>
+                                    <div class="image-selector">
+                                        <p class="bold">Choisir une image :</p>
+                                        <div class="image-grid"></div>
+                                    </div>
+                                    <button type="submit">Sauvegarder</button>
+                                </form>`);
+    
+        const imageGrid = menu.select(".image-grid");
+        images.forEach(imageNum => {
+            imageGrid.append("img")
+                .attr("src", `/static/images/${imageNum}.png`)
+                .attr("alt", `${imageNum}`)
+                .attr("width", imageSize)
+                .attr("height", imageSize)
+                .attr("class", "selectable-image")
+                .style("border", imageNum === selectedImage ? "5px solid rgb(78,78,78)" : "none")
+                .on("click", function () {
+                    selectedImage = imageNum;
+                    d3.selectAll(".selectable-image").style("border", "none");
+                    d3.select(this).style("border", "5px solid rgb(78,78,78)").style("border-radius", "50em");
+                });
+        });
+    
         d3.select("#editForm").on("submit", function (event) {
             event.preventDefault();
             const formData = new FormData(this);
+            formData.append("image_node", selectedImage); // Ajouter l'image sélectionnée aux données du formulaire
+    
             fetch(`/update_node/${nodeData.id}/`, {
                 method: "POST",
                 body: formData,
@@ -188,13 +305,17 @@ d3.json("/get_graph_data/").then(function (data) {
                         nodeData.label = response.node.label;
                         nodeData.concise_description = response.node.concise_description;
                         nodeData.type = response.node.type;
-
-                        // Update the displayed node text
-                        d3.select(`.node text`).filter(d => d.id === nodeData.id)
+                        nodeData.image_node = response.node.image_node; // Mettre à jour l'ID de l'image
+    
+                        // Update the displayed node text and image
+                        d3.selectAll(".node text").filter(d => d.id === nodeData.id)
                             .text(nodeData.label);
-
-                        // Close the edit form
-                        menu.style("display", "none");
+                        d3.selectAll(".node image").filter(d => d.id === nodeData.id)
+                            .attr("xlink:href", `/static/images/${selectedImage}.png`);
+    
+                        // Call imageClicked with updated data to refresh the menu
+                        imageClicked(null, nodeData);
+                        imageClicked(null, nodeData);
                     } else {
                         console.log("Errors:", response.errors);
                     }
@@ -325,3 +446,9 @@ d3.json("/get_graph_data/").then(function (data) {
         }
     }
 });
+
+}
+
+// // Exemple d'appel de la fonction avec une valeur par défaut
+// loadGraphDataByWindow(2);
+
