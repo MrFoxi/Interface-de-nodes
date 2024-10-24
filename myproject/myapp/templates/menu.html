@@ -1,0 +1,18 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Menu</title>
+    <link rel="stylesheet" href="{% static 'css/menu.css' %}">
+</head>
+<body>
+    <h1 style="color: white;">MENU</h1>
+    <div>
+        <a href="{% url 'visualisation' %}"><p>Page de Visualisation</p><br/></a>
+        <a href="{% url 'upload_json' %}"><p>Page d'ajout de JSON</p><br/></a>
+        <a href="{% url 'get_graph_data' %}"><p>Page du JSON</p></a>
+        
+    </div>
+</body>
+</html>

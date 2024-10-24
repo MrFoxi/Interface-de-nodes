@@ -7,8 +7,10 @@
 body {
     padding: 0%;
     margin: 0px;
-    background-color: #626262;
+    background: url("../images/visualisation-background.png");
 }
+
+
 
 .node {
     fill: #ccc;
@@ -55,25 +57,26 @@ body {
 
 #menu-right {
   position: absolute;
-  background-color: #2C2C2C;
+  background: #ffb81c;
   color: #ccc;
   right: 0;
   top: 0; /* Ajustez selon vos besoins */
-  height: 99%;
+  height: 100%;
   width: 20%; /* Largeur du menu */
   display: none; /* Masquer par défaut */
-  border: 1px solid #ccc; /* Bordure pour le menu */
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); /* Ombre pour un effet d'élévation */
   z-index: 10; /* S'assurer qu'il est au-dessus d'autres éléments */
 }
 
-
+#menu-right h3 {
+  color: #000;
+}
 
 /* Styles pour le menu */
 #menu {
     position: absolute;
-    background-color: #2C2C2C;
-    color: #ccc;
+    background: #ffb81c;
+    color: #000;
     padding: 10px;
     width: 33%;
     /* Taille fixe en largeur */
@@ -109,12 +112,69 @@ body {
 .menutitre {
     font-family: "Anton", sans-serif;
     text-align: center;
+    color: black;
 }
 
 .menulabel {
     font-family: "Readex Pro", sans-serif;
     
 }
+
+.add-window { 
+  position: absolute;
+  text-align: center;
+  padding: 1em 2em 1em 2em;
+  border: solid white 1px;
+  border-radius: 20em;
+  bottom: 6em;
+  left: 34.6485px;
+  background-color: #5a5a5a;
+  color: white;
+  z-index: 20;
+}
+
+.return-menu {
+  position: absolute;
+  text-align: center;
+  padding: 1em 2em 1em 2em;
+  border: solid white 1px;
+  border-radius: 20em;
+  bottom: 2em;
+  left: 107.8985px;
+  background-color: #5a5a5a;
+  color: white;
+  z-index: 20;
+}
+
+.reload-button {
+  position: absolute;
+  text-align: center;
+  padding: 1em 2em 1em 2em;
+  border: solid white 1px;
+  border-radius: 20em;
+  bottom: 11em;
+  left: 96.5px;
+  background-color: #5a5a5a;
+  color: white;
+  z-index: 20;
+}
+
+.list-windows {
+  max-height: 60%;
+  overflow-y: scroll;
+  
+}
+
+/* Global */
+div::-webkit-scrollbar {
+  width: 8px;
+}
+/* Ascenseur */
+div::-webkit-scrollbar-thumb {
+  background: #aaa;
+  border-radius: 8px;
+}
+
 
 .menulabel-right {
   font-family: "Readex Pro", sans-serif;
@@ -126,6 +186,7 @@ body {
   width: 20em;
   margin-left: 2Em;
   margin-bottom: 1em;
+  background-color: #252525;
 }
 
 #graph-container {
@@ -345,3 +406,37 @@ body {
   margin: 10px;
 }
 
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+  background-color: white;
+  margin: 5% auto;
+  
+  border: 1px solid #888;
+  width: 80%;
+  height: 80%;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}

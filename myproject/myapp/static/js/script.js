@@ -28,7 +28,7 @@ function createArrow() {
 
     arrow.append("polygon")
         .attr("points", "0,0 20,-10 20,10")
-        .attr("fill", "black") // Couleur de la flèche
+        .attr("fill", "white") // Couleur de la flèche
         .style("cursor", "pointer") // Changer le curseur pour indiquer que c'est cliquable
         .on("click", () => {
             toggleMenu(); // Appelle la fonction pour afficher/masquer le menu
@@ -51,20 +51,58 @@ function loadWindows() {
     d3.json('/get_windows/').then(function (windows) {
         const menu = d3.select("#menu-right");
         menu.html(''); // Effacer le contenu du menu avant de recharger les fenêtres
-        menu.append("h3").text("List of Windows:").attr("class", "menutitre");
+        
+        // Ajouter un titre pour le menu
+        menu.append("h3").text("Liste des fenêtres:").attr("class", "menutitre");
+        
+        // Créer un div contenant la liste des fenêtres
+        const windowsList = menu.append("div").attr("class", "list-windows");
+
         windows.forEach(windowValue => {
-            const windowDiv = menu.append("div")
+            const windowDiv = windowsList.append("div") // Ajouter chaque fenêtre dans un div avec la classe 'menulabel-right'
                 .text(`Window: ${windowValue}`)
                 .attr("class", "menulabel-right")
                 .style("cursor", "pointer") // Indiquer que c'est cliquable
                 .on("click", () => {
-                    
                     loadGraphDataByWindow(windowValue); // Recharger la page avec la valeur de la fenêtre
                     toggleMenu();
                 });
         });
+
+        menu.append("H4").text("Recharger la Page").attr("id", "reload-button").attr("class", "reload-button").style("cursor", "pointer").on("click", () => {
+            location.reload(true);
+        });
+        
+        // Ajouter un bouton pour ouvrir le modal
+        const addGraphBtn = menu.append("h4")
+            .text("Ajouter un graphique à cette fenêtre")
+            .attr("class", "add-window")
+            .style("cursor", "pointer")
+            .on("click", () => {
+                document.getElementById('uploadModal').style.display = "block"; // Ouvrir le modal
+            });
+
+        menu.append("a").text("Retour au menu").attr("class", "return-menu").attr("href", `/menu/`);
     });
+
+    // Gérer la fermeture du modal
+    const modal = document.getElementById('uploadModal');
+    const span = document.getElementsByClassName('close')[0];
+
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    }
 }
+
+
+
+
 
 
 function toggleMenu() {

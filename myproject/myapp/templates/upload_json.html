@@ -1,7 +1,10 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>Upload JSON</title>
+    <link rel="stylesheet" href="{% static 'css/menu.css' %}">
 </head>
 <body>
     <h1>Upload JSON File</h1>
@@ -10,5 +13,7 @@
         {{ form.as_p }}
         <button type="submit">Upload</button>
     </form>
+    </br></br></br></br></br></br></br></br></br></br></br>
+    <a href="{% url 'menu' %}"><p>Retour au Menu</p></a>
 </body>
 </html>

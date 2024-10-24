@@ -188,3 +188,7 @@ def get_windows(request):
     # Récupérer toutes les fenêtres dans JSONFile
     windows_data = JSONFile.objects.values_list('window', flat=True).distinct()
     return JsonResponse(list(windows_data), safe=False)
+
+
+def get_menu(request):
+    return render(request, 'menu.html')
